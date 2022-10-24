@@ -1,26 +1,35 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{delete, get, post, put, web, App, HttpResponse, HttpServer, Responder};
 
 #[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
+async fn get_todo() -> impl Responder {
+    HttpResponse::Ok().body("Todo")
 }
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
+#[post("/")]
+async fn create_todo(req_body: String) -> impl Responder {
     HttpResponse::Ok().body(req_body)
 }
 
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
+#[put("/{id}")]
+async fn update_todo(req_body: String) -> impl Responder {
+    HttpResponse::Ok().body(req_body)
+}
+
+#[delete("/{id}")]
+async fn delete_todo(req_body: String) -> impl Responder {
+    HttpResponse::Ok().body(req_body)
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
-        App::new()
-            .service(hello)
-            .service(echo)
-            .route("/hey", web::get().to(manual_hello))
+        App::new().service(
+            web::scope("/todo")
+                .service(create_todo)
+                .service(get_todo)
+                .service(update_todo)
+                .service(delete_todo),
+        )
     })
     .bind(("127.0.0.1", 8080))?
     .run()
