@@ -18,7 +18,7 @@ fn create_tables() -> Result<(), Error> {
     Ok(())
 }
 
-pub fn configure_db() {
+pub fn configure() {
     thread::spawn(|| {
         create_tables().expect("Configure DB Issue");
     })
