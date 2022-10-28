@@ -1,27 +1,31 @@
-use postgres::{Client, Error, NoTls};
-use std::thread;
+// use diesel::pg::PgConnection;
+// use diesel::r2d2::ConnectionManager;
+// use dotenv::dotenv;
+// use r2d2::Pool;
+// use std::env;
 
-fn create_tables() -> Result<(), Error> {
-    let mut client = Client::connect("postgresql://admin:123@localhost:9000/todo", NoTls)?;
+// // The Postgres-specific connection pool managing all database connections.
+// pub type PostgresPool = Pool<ConnectionManager<PgConnection>>;
 
-    client.batch_execute(
-        "
-            CREATE TABLE IF NOT EXISTS todo (
-                id              SERIAL PRIMARY KEY,
-                title           VARCHAR NOT NULL,
-                description     VARCHAR,
-                status          SMALLINT
-            )
-        ",
-    )?;
+// pub fn get_pool() -> PostgresPool {
+//     // it from the environment within this function
+//     dotenv().ok();
+//     let url = env::var("DATABASE_URL").expect("no DB URL");
+//     let migr = ConnectionManager::<PgConnection>::new(url);
+//     r2d2::Pool::builder()
+//         .build(migr)
+//         .expect("could not build connection pool")
+// }
 
-    Ok(())
-}
+use diesel::pg::PgConnection;
+use diesel::prelude::*;
+use dotenv::dotenv;
+use std::env;
 
-pub fn configure() {
-    thread::spawn(|| {
-        create_tables().expect("Configure DB Issue");
-    })
-    .join()
-    .expect("Panic!");
+pub fn establish_connection() -> PgConnection {
+    dotenv().ok();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    PgConnection::establish(&database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
