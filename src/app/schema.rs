@@ -5,5 +5,6 @@ diesel::table! {
         id -> Int4,
         title -> Varchar,
         description -> Nullable<Varchar>,
+        status -> Int2,
     }
 }
