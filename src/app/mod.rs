@@ -1,6 +1,8 @@
 use actix_web::web;
 mod todo;
 
+pub mod db;
+
 pub fn configure_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/todo")
