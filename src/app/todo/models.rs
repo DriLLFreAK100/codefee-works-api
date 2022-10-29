@@ -1,6 +1,4 @@
-use diesel::prelude::*;
-
-#[derive(Queryable)]
+#[derive(Queryable, Serialize, Deserialize)]
 pub struct Todo {
     pub id: i32,
     pub title: String,

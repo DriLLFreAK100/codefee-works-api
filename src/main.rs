@@ -1,7 +1,10 @@
+#[macro_use]
+extern crate serde;
+#[macro_use]
+extern crate diesel;
+
+use actix_web::web::Data;
 use actix_web::{App, HttpServer};
-use app::schema::todos::dsl::*;
-use app::todo::models::*;
-use diesel::prelude::*;
 use dotenv::dotenv;
 use std::env;
 
@@ -13,21 +16,14 @@ async fn main() -> std::io::Result<()> {
     let host = env::var("HOST").expect("Host not set");
     let port = env::var("PORT").expect("Port not set");
 
-    let connection = &mut app::db::establish_connection();
-    let results = todos
-        .limit(5)
-        .load::<Todo>(connection)
-        .expect("Error loading todos");
+    let pool = Data::new(crate::app::db::get_connection_pool());
 
-    println!("Displaying {} todos", results.len());
-    for todo in results {
-        println!("{}", todo.title);
-        println!("-----------\n");
-        println!("{}", format!("{:?}", todo.description));
-    }
-
-    HttpServer::new(move || App::new().configure(app::routes::configure))
-        .bind((host, port.parse::<u16>().unwrap()))?
-        .run()
-        .await
+    HttpServer::new(move || {
+        App::new()
+            .app_data(pool.clone())
+            .configure(app::routes::configure)
+    })
+    .bind((host, port.parse::<u16>().unwrap()))?
+    .run()
+    .await
 }
