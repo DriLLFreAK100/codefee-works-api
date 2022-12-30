@@ -11,6 +11,7 @@ pub fn get_connection_pool() -> PostgresPool {
     let url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
     let manager = ConnectionManager::<PgConnection>::new(url);
+
     r2d2::Pool::builder()
         .build(manager)
         .expect("Error building connection pool")

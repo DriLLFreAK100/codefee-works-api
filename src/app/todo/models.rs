@@ -4,4 +4,5 @@ pub struct Todo {
     pub title: String,
     pub description: Option<String>,
     pub status: i16,
+    pub tags: Option<Vec<Option<String>>>,
 }

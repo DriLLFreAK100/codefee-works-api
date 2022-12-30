@@ -12,7 +12,7 @@ mod app;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    dotenv().ok();
+    dotenv().ok().expect("Env init error");
     let host = env::var("HOST").expect("Host not set");
     let port = env::var("PORT").expect("Port not set");
 
