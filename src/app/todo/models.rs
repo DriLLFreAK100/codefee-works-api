@@ -1,6 +1,7 @@
 use crate::app::schema::todos;
 
-#[derive(Queryable, Serialize, Deserialize)]
+#[derive(Queryable, AsChangeset, Identifiable, Serialize, Deserialize)]
+#[diesel(table_name = todos)]
 pub struct Todo {
     pub id: i32,
     pub title: String,
@@ -9,9 +10,9 @@ pub struct Todo {
     pub tags: Option<Vec<Option<String>>>,
 }
 
-#[derive(Insertable, Serialize, Deserialize)]
+#[derive(Insertable, AsChangeset, Serialize, Deserialize)]
 #[diesel(table_name = todos)]
-pub struct CreateTodoRequest {
+pub struct UpdateTodoRequest {
     pub title: String,
     pub description: Option<String>,
     pub status: i16,
