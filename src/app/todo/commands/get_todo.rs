@@ -6,11 +6,12 @@ use actix_web::{get, web, HttpResponse, Responder};
 pub async fn execute(db_pool: web::Data<PostgresPool>) -> impl Responder {
     match db_pool.get() {
         Err(e) => HttpResponse::InternalServerError().body(format!("{:?}", e)),
-        con => HttpResponse::Ok().json(
-            todos::table
-                .load::<Todo>(&mut con.unwrap())
-                .map(|r| r)
-                .unwrap(),
-        ),
+        con => {
+            let res: Vec<Todo> = todos::table
+                .load(&mut con.unwrap())
+                .expect("Error getting todos");
+
+            HttpResponse::Ok().json(res)
+        }
     }
 }

@@ -20,7 +20,7 @@ pub async fn execute(
             let todo: Todo = diesel::update(todos::table.find(id))
                 .set(req_body.into_inner())
                 .get_result(&mut con.unwrap())
-                .unwrap();
+                .expect("Error updating todo");
 
             HttpResponse::Ok().json(todo)
         }

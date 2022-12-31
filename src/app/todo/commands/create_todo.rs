@@ -17,7 +17,7 @@ pub async fn execute(
             let res: Todo = diesel::insert_into(todos::table)
                 .values(req_body.into_inner())
                 .get_result(&mut con.unwrap())
-                .expect("Error saving new todo");
+                .expect("Error creating todo");
 
             // Return inserted data
             HttpResponse::Ok().json(res)
