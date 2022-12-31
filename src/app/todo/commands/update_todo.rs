@@ -1,5 +1,5 @@
 use crate::app::{
-    db::PostgresPool,
+    db::*,
     error::AppError,
     http::*,
     schema::todos,
@@ -14,15 +14,13 @@ pub async fn execute(
     req_body: web::Json<UpdateTodoRequest>,
     db_pool: web::Data<PostgresPool>,
 ) -> Result<HttpResponse, AppError> {
-    match db_pool.get() {
-        Ok(mut con) => {
-            let id = path.into_inner();
+    let id = path.into_inner();
+    let req_body = &req_body.into_inner();
 
-            diesel::update(todos::table.find(id))
-                .set(req_body.into_inner())
-                .get_result::<Todo>(&mut con)
-                .into_res(String::from("Error updating todo"))
-        }
-        _ => Err(AppError::ServerError),
-    }
+    db_pool.get().run(|con| {
+        diesel::update(todos::table.find(id))
+            .set(req_body)
+            .get_result::<Todo>(con)
+            .into_res(String::from("Error updating todo"))
+    })
 }

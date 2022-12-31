@@ -2,11 +2,12 @@ use super::error::AppError;
 use actix_web::HttpResponse;
 use serde::Serialize;
 
-pub trait DbToHttp {
+pub trait HttpResponseMapper {
+    /// Convert to an actual HttpResponse result
     fn into_res(&self, expect: String) -> Result<HttpResponse, AppError>;
 }
 
-impl<D> DbToHttp for Result<D, diesel::result::Error>
+impl<D> HttpResponseMapper for Result<D, diesel::result::Error>
 where
     D: Serialize,
 {
