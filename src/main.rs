@@ -1,37 +1,35 @@
-use actix_web::{delete, get, post, put, web, App, HttpResponse, HttpServer, Responder};
+#[macro_use]
+extern crate serde;
+#[macro_use]
+extern crate diesel;
 
-#[get("/")]
-async fn get_todo() -> impl Responder {
-    HttpResponse::Ok().body("Todo")
-}
+use actix_web::web::Data;
+use actix_web::{App, HttpServer};
+use dotenv::dotenv;
+use std::env;
+use utils::db;
 
-#[post("/")]
-async fn create_todo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
-
-#[put("/{id}")]
-async fn update_todo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
-
-#[delete("/{id}")]
-async fn delete_todo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
+// Register custom mods
+mod generated;
+mod modules;
+mod utils;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new().service(
-            web::scope("/todo")
-                .service(create_todo)
-                .service(get_todo)
-                .service(update_todo)
-                .service(delete_todo),
-        )
+    println!("Core API Starting...");
+
+    dotenv().ok().expect("Env init error");
+    let host = env::var("HOST").expect("Host not set");
+    let port = env::var("PORT").expect("Port not set");
+    let pool = Data::new(db::get_connection_pool());
+    println!("Configurations loaded successfully");
+
+    HttpServer::new(move || {
+        App::new()
+            .app_data(pool.clone())
+            .configure(modules::todo::routes::configure)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind((host, port.parse::<u16>().unwrap()))?
     .run()
     .await
 }

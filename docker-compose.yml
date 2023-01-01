@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  core-api: 
+    container_name: core-api
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+
+  core-db:
+    container_name: core-db
+    restart: always
+    image: postgres:15.0-alpine3.16
+    environment:
+      POSTGRES_DB: todo
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123
+    volumes:
+      - core-db-data:/var/lib/postgresql/data
+    ports:
+      - 9000:5432
+
+volumes:
+  core-db-data:
+
