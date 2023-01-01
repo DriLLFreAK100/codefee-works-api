@@ -11,6 +11,7 @@ use utils::db;
 
 // Register custom mods
 mod generated;
+mod middlewares;
 mod modules;
 mod utils;
 
@@ -26,6 +27,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
+            .wrap(middlewares::cors::with_cors())
             .app_data(pool.clone())
             .configure(modules::todo::routes::configure)
     })
