@@ -9,7 +9,7 @@ use diesel::prelude::*;
 pub async fn execute(path: web::Path<i32>, db_pool: web::Data<PostgresPool>) -> impl Responder {
     let target_id = path.into_inner();
 
-    db_pool.get().run(|con| {
+    db_pool.run(|con| {
         diesel::delete(todos.filter(id.eq(target_id)))
             .execute(con)
             .into_affected_res("Error deleting todo")

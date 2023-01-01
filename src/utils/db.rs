@@ -1,3 +1,4 @@
+use actix_web::web;
 use diesel::pg::PgConnection;
 use diesel::r2d2::ConnectionManager;
 use dotenv::dotenv;
@@ -19,14 +20,14 @@ pub fn get_connection_pool() -> PostgresPool {
         .expect("Error building connection pool")
 }
 
-pub trait PoolConnection {
+pub trait PgConnectionHandler {
     /// Run operation (closure) by passing in the mutable ref of an actual connection
     fn run<F, D>(&mut self, func: F) -> Result<D, AppError>
     where
         F: Fn(&mut PgConnection) -> Result<D, AppError>;
 }
 
-impl PoolConnection for Result<PooledConnection<ConnectionManager<PgConnection>>, Error> {
+impl PgConnectionHandler for Result<PooledConnection<ConnectionManager<PgConnection>>, Error> {
     fn run<F, D>(&mut self, func: F) -> Result<D, AppError>
     where
         F: Fn(&mut PgConnection) -> Result<D, AppError>,
@@ -35,5 +36,21 @@ impl PoolConnection for Result<PooledConnection<ConnectionManager<PgConnection>>
             Ok(con) => func(con),
             _ => Err(AppError::ServerError),
         }
+    }
+}
+
+pub trait PooledConnectionHandler {
+    fn run<F, D>(self, func: F) -> Result<D, AppError>
+    where
+        F: Fn(&mut PgConnection) -> Result<D, AppError>;
+}
+
+impl PooledConnectionHandler for web::Data<PostgresPool> {
+    /// Get a pooled connection and run operation (closure) with the connection acquired
+    fn run<F, D>(self, func: F) -> Result<D, AppError>
+    where
+        F: Fn(&mut PgConnection) -> Result<D, AppError>,
+    {
+        self.get().run(func)
     }
 }

@@ -15,7 +15,7 @@ pub async fn execute(
     let id = path.into_inner();
     let req_body = &req_body.into_inner();
 
-    db_pool.get().run(|con| {
+    db_pool.run(|con| {
         diesel::update(todos::table.find(id))
             .set(req_body)
             .get_result::<Todo>(con)

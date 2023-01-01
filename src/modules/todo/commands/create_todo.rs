@@ -13,7 +13,7 @@ pub async fn execute(
 ) -> impl Responder {
     let req_body = &req_body.into_inner();
 
-    db_pool.get().run(|con| {
+    db_pool.run(|con| {
         diesel::insert_into(todos::table)
             .values(req_body)
             .get_result::<Todo>(con)
