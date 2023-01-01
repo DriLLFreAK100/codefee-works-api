@@ -15,9 +15,13 @@ where
     fn into_res(&self, expect: &str) -> Result<HttpResponse, AppError> {
         match self {
             Ok(data) => Ok(HttpResponse::Ok().json(data)),
-            _ => Err(AppError::CustomError {
-                message: expect.to_owned(),
-            }),
+            Err(e) => {
+                println!("[Error]: {:?}", e);
+
+                Err(AppError::CustomError {
+                    message: expect.to_owned(),
+                })
+            }
         }
     }
 }
@@ -39,9 +43,13 @@ impl RowAffectedResponse for QueryResult<usize> {
                     message: String::from("Operation does not affect any row"),
                 });
             }
-            _ => Err(AppError::CustomError {
-                message: expect.to_owned(),
-            }),
+            Err(e) => {
+                println!("[Error]: {:?}", e);
+
+                Err(AppError::CustomError {
+                    message: expect.to_owned(),
+                })
+            }
         }
     }
 }

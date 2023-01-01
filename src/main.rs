@@ -16,11 +16,13 @@ mod utils;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    println!("Core API Starting...");
+
     dotenv().ok().expect("Env init error");
     let host = env::var("HOST").expect("Host not set");
     let port = env::var("PORT").expect("Port not set");
-
     let pool = Data::new(db::get_connection_pool());
+    println!("Configurations loaded successfully");
 
     HttpServer::new(move || {
         App::new()
