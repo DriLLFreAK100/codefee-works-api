@@ -1,4 +1,4 @@
-use crate::app::todo::commands::{create_todo, delete_todo, get_todo, update_todo};
+use super::commands::{create_todo, delete_todo, get_todo, update_todo};
 use actix_web::web;
 
 pub fn configure(cfg: &mut web::ServiceConfig) {

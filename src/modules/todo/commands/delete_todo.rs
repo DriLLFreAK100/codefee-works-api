@@ -1,7 +1,6 @@
-use crate::app::{
-    db::*,
-    http::*,
-    schema::todos::dsl::{id, todos},
+use crate::{
+    generated::schema::todos::dsl::{id, todos},
+    utils::{db::*, http::*},
 };
 use actix_web::{delete, web, Responder};
 use diesel::prelude::*;

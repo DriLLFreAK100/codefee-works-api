@@ -1,8 +1,7 @@
-use crate::app::{
-    db::*,
-    http::*,
-    schema::todos,
-    todo::models::{Todo, UpdateTodoRequest},
+use crate::{
+    generated::schema::todos,
+    modules::todo::models::{Todo, UpdateTodoRequest},
+    utils::{db::*, http::*},
 };
 use actix_web::{put, web, Responder};
 use diesel::prelude::*;

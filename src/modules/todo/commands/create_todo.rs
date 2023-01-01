@@ -1,11 +1,10 @@
-use crate::app::{
-    db::*,
-    http::*,
-    schema::todos,
-    todo::models::{Todo, UpdateTodoRequest},
+use crate::{
+    generated::schema::todos,
+    modules::todo::models::{Todo, UpdateTodoRequest},
+    utils::{db::*, http::*},
 };
-use crate::diesel::RunQueryDsl;
 use actix_web::{post, web, Responder};
+use diesel::prelude::*;
 
 #[post("")]
 pub async fn execute(

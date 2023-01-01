@@ -1,4 +1,4 @@
-use crate::app::schema::todos;
+use crate::generated::schema::todos;
 
 #[derive(Queryable, AsChangeset, Identifiable, Serialize, Deserialize)]
 #[diesel(table_name = todos)]

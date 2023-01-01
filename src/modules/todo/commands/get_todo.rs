@@ -1,6 +1,10 @@
-use crate::app::{db::*, http::*, schema::todos, todo::models::Todo};
-use crate::diesel::RunQueryDsl;
+use crate::{
+    generated::schema::todos,
+    modules::todo::models::Todo,
+    utils::{db::*, http::*},
+};
 use actix_web::{get, web, Responder};
+use diesel::prelude::*;
 
 #[get("")]
 pub async fn execute(db_pool: web::Data<PostgresPool>) -> impl Responder {
