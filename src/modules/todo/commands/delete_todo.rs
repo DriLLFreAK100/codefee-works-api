@@ -5,6 +5,13 @@ use crate::{
 use actix_web::{delete, web, Responder};
 use diesel::prelude::*;
 
+/// Delete todo by ID
+#[utoipa::path(
+    responses(
+        (status = 200, description = "Deleted todo successfully", body = bool)
+    ),
+    tag="todo"
+)]
 #[delete("/{id}")]
 pub async fn execute(path: web::Path<i32>, db_pool: web::Data<PostgresPool>) -> impl Responder {
     let target_id = path.into_inner();

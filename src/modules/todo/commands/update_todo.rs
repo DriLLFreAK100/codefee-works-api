@@ -6,6 +6,13 @@ use crate::{
 use actix_web::{put, web, Responder};
 use diesel::prelude::*;
 
+/// Update todo by ID
+#[utoipa::path(
+    responses(
+        (status = 200, description = "Updated todo successfully", body = Todo)
+    ),
+    tag="todo"
+)]
 #[put("/{id}")]
 pub async fn execute(
     path: web::Path<i32>,
