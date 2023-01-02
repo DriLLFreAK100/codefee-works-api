@@ -18,3 +18,12 @@ Refer to https://diesel.rs/guides/getting-started
 2. `docker compose up --build` to build + spin up everything
 3. `docker compose up [service_name]` to spin up specific service
 4. `docker compose up --build [service_name]` to build and spin up specific service
+
+
+## Things to setup
+[x] Actix Routes 
+[x] Base methods for code ergonomics
+[x] Error Handling
+[ ] Logging
+[x] Containerization
+[ ] Observability - Datadog, etc.
