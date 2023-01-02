@@ -6,6 +6,14 @@ use crate::{
 use actix_web::{post, web, Responder};
 use diesel::prelude::*;
 
+/// Create todo
+#[utoipa::path(
+    request_body = UpdateTodoRequest,
+    responses(
+        (status = 200, description = "Created a todo item successfully", body = Todo)
+    ),
+    tag="todo"
+)]
 #[post("")]
 pub async fn execute(
     db_pool: web::Data<PostgresPool>,
