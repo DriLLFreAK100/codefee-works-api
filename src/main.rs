@@ -3,13 +3,14 @@ extern crate serde;
 #[macro_use]
 extern crate diesel;
 
-use actix_web::web::Data;
-use actix_web::{App, HttpServer};
-use configs::{cors::with_cors, open_api::with_swagger};
-use dotenv::dotenv;
-use std::env;
-use utils::db;
-use utils::env::is_dev;
+use actix_web::{web::Data, App, HttpServer};
+use configs::{
+    cors::with_cors,
+    logger::{end_telemetry, init_telemetry, with_logger},
+    open_api::with_swagger,
+};
+use utils::db::get_connection_pool;
+use utils::env::{get_host_port, init_env, is_dev};
 
 // Register custom mods
 mod configs;
@@ -21,17 +22,17 @@ mod utils;
 async fn main() -> std::io::Result<()> {
     println!("Core API Starting...");
 
-    // Load environment variables
-    dotenv().ok().expect("Env init error");
-    let host = env::var("HOST").expect("Host not set");
-    let port = env::var("PORT").expect("Port not set");
-    let pool = Data::new(db::get_connection_pool());
+    init_env();
+    init_telemetry();
     println!("Configurations loaded successfully");
+
+    let pool = Data::new(get_connection_pool());
 
     // Start actix server
     HttpServer::new(move || {
         let app = App::new()
             .wrap(with_cors())
+            .wrap(with_logger())
             .app_data(pool.clone())
             .configure(modules::todo::routes::configure);
 
@@ -40,7 +41,11 @@ async fn main() -> std::io::Result<()> {
             false => app,
         }
     })
-    .bind((host, port.parse::<u16>().unwrap()))?
+    .bind(get_host_port())?
     .run()
-    .await
+    .await?;
+
+    end_telemetry();
+
+    Ok(())
 }
