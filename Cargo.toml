@@ -4,17 +4,33 @@ description = "Experimental APIs for Codefee Works"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+# Actix
 actix-web = "4"
 actix-cors = "0.6.4"
-postgres = "0.19.4"
+
+# Tracing
+tracing-actix-web = { version = "0.7", features = ["opentelemetry_0_17"] }
+tracing = "0.1"
+opentelemetry = { version = "0.17", features = ["rt-tokio-current-thread"] }
+opentelemetry-jaeger = { version = "0.16", features = [
+  "rt-tokio-current-thread",
+] }
+tracing-opentelemetry = { version = "0.17" }
+tracing-subscriber = { version = "0.3", features = ["registry", "env-filter"] }
+tracing-bunyan-formatter = "0.3"
+
+# DB
 diesel = { version = "2.0.2", features = ["postgres", "r2d2"] }
-dotenv = "0.15.0"
+postgres = "0.19.4"
 r2d2 = "0.8.10"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1"
-derive_more = { version = "0.99.0", features = ["display", "error"] }
+
+# Open API (with utoipa)
 utoipa = { version = "2", features = ["actix_extras"] }
 utoipa-swagger-ui = { version = "3", features = ["actix-web"] }
+
+# Others
+derive_more = { version = "0.99.0", features = ["display", "error"] }
+dotenv = "0.15.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1"

@@ -1,7 +1,6 @@
-use actix_web::web;
+use actix_web::web::{self};
 use diesel::pg::PgConnection;
 use diesel::r2d2::ConnectionManager;
-use dotenv::dotenv;
 use r2d2::{Error, Pool, PooledConnection};
 use std::env;
 
@@ -9,8 +8,8 @@ use super::error::AppError;
 
 pub type PostgresPool = Pool<ConnectionManager<PgConnection>>;
 
+/// Get DB Connection pool
 pub fn get_connection_pool() -> PostgresPool {
-    dotenv().ok();
     let url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
     let manager = ConnectionManager::<PgConnection>::new(url);
