@@ -23,7 +23,7 @@ pub fn get_host_port() -> (String, u16) {
     (host, port)
 }
 
-/// Get log level - `info`, `error`, etc.
-pub fn get_log_level() -> String {
-    env::var("LOG_LEVEL").expect("Log level not set")
+/// Get app name configured
+pub fn get_app_name() -> String {
+    env::var("APP_NAME").unwrap_or(String::from("codefee-works-api"))
 }

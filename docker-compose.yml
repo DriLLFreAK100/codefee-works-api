@@ -7,8 +7,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
     ports:
       - 8080:8080
+    depends_on:
+      - core-db
+      - jaeger
 
   core-db:
     container_name: core-db
@@ -23,6 +29,22 @@ services:
     ports:
       - 9000:5432
 
+  jaeger:
+    container_name: jaeger
+    restart: always 
+    image: jaegertracing/all-in-one:latest
+    environment:
+      - SPAN_STORAGE_TYPE=badger
+      - BADGER_EPHEMERAL=false
+      - BADGER_DIRECTORY_VALUE=/badger/data
+      - BADGER_DIRECTORY_KEY=/badger/key
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"
+    volumes:
+      - jaeger-data:/badger 
+
 volumes:
   core-db-data:
+  jaeger-data:
 
