@@ -4,7 +4,7 @@ diesel::table! {
     todos (id) {
         id -> Int4,
         title -> Varchar,
-        description -> Nullable<Varchar>,
+        description -> Nullable<Text>,
         status -> Int2,
         tags -> Nullable<Array<Nullable<Text>>>,
     }
@@ -15,6 +15,7 @@ diesel::table! {
         id -> Int4,
         parent_todo_id -> Nullable<Int4>,
         child_todo_id -> Nullable<Int4>,
+        relationship_type -> Int2,
     }
 }
 
