@@ -25,5 +25,5 @@ pub fn get_host_port() -> (String, u16) {
 
 /// Get app name configured
 pub fn get_app_name() -> String {
-    env::var("APP_NAME").unwrap_or(String::from("codefee-works-api"))
+    env::var("APP_NAME").unwrap_or("codefee-works-api".into())
 }
