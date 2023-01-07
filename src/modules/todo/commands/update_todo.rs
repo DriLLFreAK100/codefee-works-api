@@ -8,13 +8,14 @@ use diesel::prelude::*;
 
 /// Update todo by ID
 #[utoipa::path(
+    path = "/todo/{id}",
     responses(
         (status = 200, description = "Updated todo successfully", body = Todo)
     ),
     tag="todo"
 )]
 #[put("/{id}")]
-pub async fn execute(
+pub async fn update_todo(
     path: web::Path<i32>,
     req_body: web::Json<UpdateTodoRequest>,
     db_pool: web::Data<PostgresPool>,
