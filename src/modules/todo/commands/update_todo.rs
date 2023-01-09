@@ -9,6 +9,7 @@ use diesel::prelude::*;
 /// Update todo by ID
 #[utoipa::path(
     path = "/todo/{id}",
+    request_body = UpdateTodoRequest,
     responses(
         (status = 200, description = "Updated todo successfully", body = Todo)
     ),
