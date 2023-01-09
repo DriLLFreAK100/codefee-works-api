@@ -11,6 +11,7 @@ use utoipa_swagger_ui::SwaggerUi;
         // Todo
         commands::create_todo::create_todo,
         commands::delete_todo::delete_todo,
+        commands::get_todo::get_todo,
         commands::get_todos::get_todos,
         commands::update_todo::update_todo,
       ),
