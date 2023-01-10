@@ -13,10 +13,16 @@ use utoipa_swagger_ui::SwaggerUi;
         commands::delete_todo::delete_todo,
         commands::get_todo::get_todo,
         commands::get_todos::get_todos,
+        commands::link_todos::link_todos,
         commands::update_todo::update_todo,
       ),
       components(
-          schemas(models::Todo, models::UpdateTodoRequest)
+            schemas(
+                models::Todo, 
+                models::UpdateTodoRequest,
+                models::TodoRelation,
+                models::LinkTodosRequest,
+            )
       ),
       tags(
           (name = "todo", description = "Todo API endpoints")
