@@ -2,11 +2,18 @@ use std::collections::HashSet;
 
 use crate::{
     generated::schema::todos_relations::{self, child_todo_id, parent_todo_id, relationship_type},
-    modules::todo::models::{LinkTodosRequest, TodoRelation},
+    modules::todo::models::TodoRelation,
     utils::db::*,
 };
 use actix_web::{put, web, HttpResponse, Responder};
 use diesel::prelude::*;
+use utoipa::ToSchema;
+
+#[derive(Serialize, Deserialize, ToSchema)]
+pub struct LinkTodosRequest {
+    pub todo_ids: Vec<i32>,
+    pub relationship_type: i16,
+}
 
 /// Link todos to a todo
 #[utoipa::path(

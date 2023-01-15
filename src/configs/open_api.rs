@@ -18,10 +18,15 @@ use utoipa_swagger_ui::SwaggerUi;
       ),
       components(
             schemas(
+                // Shared
                 models::Todo, 
                 models::UpdateTodoRequest,
                 models::TodoRelation,
-                models::LinkTodosRequest,
+                
+                // Req/Res DTOs
+                commands::get_todo::RelatedTodoResponse,
+                commands::get_todo::TodoDetailsResponse,
+                commands::link_todos::LinkTodosRequest,
             )
       ),
       tags(
