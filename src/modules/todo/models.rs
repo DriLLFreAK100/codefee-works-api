@@ -1,6 +1,26 @@
 use crate::generated::schema::{todos, todos_relations};
 use utoipa::ToSchema;
 
+// #[derive(ToSchema)]
+// pub enum TodoStatus {
+//     InProgress,
+//     Done,
+//     Cancel,
+// }
+
+#[derive(ToSchema, Serialize, Deserialize)]
+pub enum TodoRelationship {
+    SubTask,
+    Dependency,
+}
+
+pub fn from_relationship(relationship: &TodoRelationship) -> i16 {
+    match relationship {
+        TodoRelationship::SubTask => 0,
+        TodoRelationship::Dependency => 1,
+    }
+}
+
 #[derive(Queryable, AsChangeset, Identifiable, Serialize, Deserialize, ToSchema)]
 #[diesel(table_name = todos)]
 pub struct Todo {
