@@ -8,13 +8,14 @@ use diesel::prelude::*;
 
 /// Get all todos
 #[utoipa::path(
+    path = "/todo",
     responses(
         (status = 200, description = "Get all todos successfully", body = [Todo])
     ),
     tag="todo"
 )]
 #[get("")]
-pub async fn execute(db_pool: web::Data<PostgresPool>) -> impl Responder {
+pub async fn get_todos(db_pool: web::Data<PostgresPool>) -> impl Responder {
     db_pool.run(|con| {
         todos::table
             .load::<Todo>(con)

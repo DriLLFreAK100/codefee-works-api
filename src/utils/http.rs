@@ -40,7 +40,7 @@ impl RowAffectedResponse for QueryResult<usize> {
                 }
 
                 return Err(AppError::CustomError {
-                    message: String::from("Operation does not affect any row"),
+                    message: "Operation does not affect any row".into(),
                 });
             }
             Err(e) => {

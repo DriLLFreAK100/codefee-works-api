@@ -8,6 +8,7 @@ use diesel::prelude::*;
 
 /// Create todo
 #[utoipa::path(
+    path = "/todo",
     request_body = UpdateTodoRequest,
     responses(
         (status = 200, description = "Created a todo item successfully", body = Todo)
@@ -15,7 +16,7 @@ use diesel::prelude::*;
     tag="todo"
 )]
 #[post("")]
-pub async fn execute(
+pub async fn create_todo(
     db_pool: web::Data<PostgresPool>,
     req_body: web::Json<UpdateTodoRequest>,
 ) -> impl Responder {
