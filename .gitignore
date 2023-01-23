@@ -1,1 +1,6 @@
+# Build artifacts
 /target
+._target
+
+# Environment related
+.env
