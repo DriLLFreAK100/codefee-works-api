@@ -38,11 +38,11 @@ diesel migration run
 
 For more details, you can refer to the [notes.md](https://github.com/DriLLFreAK100/codefee-works-api/blob/main/notes.md) file.
 
-## 2.3 `.env` file
+## 2.4 `.env` file
 
 You can just make a copy from `.env.local` (the sample env file) and rename it as `.env`.
 
-## 2.4 For Local Development
+## 2.5 For Local Development
 
 To develop the Actix Web application itself, you need to first stop the `core-api` service if you did spun it up using docker-compose in the previous steps.
 
