@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use crate::{
     generated::schema::todos_relations::{self, child_todo_id, parent_todo_id, relationship_type},
-    modules::todo::models::{from_relationship, TodoRelation, TodoRelationship},
+    modules::todo::models::{TodoRelation, TodoRelationship},
     utils::db::*,
 };
 use actix_web::{put, web, HttpResponse, Responder};
@@ -66,7 +66,7 @@ pub async fn link_todos(
                 data.push((
                     parent_todo_id.eq(id),
                     child_todo_id.eq(todo_id),
-                    relationship_type.eq(from_relationship(&req_body.relationship_type)),
+                    relationship_type.eq(req_body.relationship_type as i16),
                 ));
             }
 
