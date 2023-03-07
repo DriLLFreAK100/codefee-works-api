@@ -8,17 +8,10 @@ use utoipa::ToSchema;
 //     Cancel,
 // }
 
-#[derive(ToSchema, Serialize, Deserialize)]
+#[derive(ToSchema, Copy, Clone, Serialize, Deserialize)]
 pub enum TodoRelationship {
     SubTask,
     Dependency,
-}
-
-pub fn from_relationship(relationship: &TodoRelationship) -> i16 {
-    match relationship {
-        TodoRelationship::SubTask => 0,
-        TodoRelationship::Dependency => 1,
-    }
 }
 
 #[derive(Queryable, AsChangeset, Identifiable, Serialize, Deserialize, ToSchema)]
