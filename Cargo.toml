@@ -26,8 +26,8 @@ postgres = "0.19.4"
 r2d2 = "0.8.10"
 
 # Open API (with utoipa)
-utoipa = { version = "2", features = ["actix_extras"] }
-utoipa-swagger-ui = { version = "3", features = ["actix-web"] }
+utoipa = { version = "3.0.3", features = ["actix_extras"] }
+utoipa-swagger-ui = { version = "3.0.2", features = ["actix-web"] }
 
 # Others
 derive_more = { version = "0.99.0", features = ["display", "error"] }
