@@ -8,9 +8,18 @@ Easiest way to spin up a working sample of this repo is via Docker Compose
 
 ## 2.1 Docker Compose
 
-To spin up the entire stack on local, just run the command
+To spin up the entire stack on local, just run the following command (depending on your target architecture).
+
+For arm64 / aarch64 / M1 Mac for example, it is supported by default
 
 ```
+docker-compose up
+```
+
+For amd84 / x86_64 / Intel chips for example,
+
+```
+docker-compose build --build-arg "ARCH=x86_64"
 docker-compose up
 ```
 

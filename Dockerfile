@@ -26,7 +26,7 @@ RUN cargo install --path .
 FROM gcr.io/distroless/cc-debian11
 
 # Set the architecture argument (arm64, i.e. aarch64 as default)
-# For amd64, i.e. x86_64, you can append a flag when invoking the cli `... --build-arg "ARCH=x86_64"`
+# For amd64, i.e. x86_64, you can append a flag when invoking the build `... --build-arg "ARCH=x86_64"`
 ARG ARCH=aarch64
 
 # libpq related (required by diesel)
